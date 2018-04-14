@@ -18,9 +18,9 @@ public:
 	QPushButton* setAvailableButtons(int * numbers);
 	QPushButton* getAvailableButtons();
 	QGridLayout* getLayout();
-
-private:
 	QPushButton* buttons[3][3];
+private:
+
 	QGridLayout* layout;
 };
 

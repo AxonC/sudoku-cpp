@@ -6,38 +6,28 @@ Keypad::Keypad(QWidget *parent): QWidget(parent)
 {
 	const int displayMatrix[][3] = { {1, 2, 3}, {4, 5, 6}, {7, 8, 9} };
 
-	QGridLayout* layout = new QGridLayout();
+	QGridLayout* layout = new QGridLayout(parent);
 
 	// creates boolean arrray for those numbers which are available.
 
-	for (int row{ 0 }; row < 10; row++)
+	for (int row{ 0 }; row < 3; row++)
 	{
 		for (int col{ 0 }; col < 3; col++)
 		{
 			int number = displayMatrix[row][col];
 			QString text = QString::number(number);
-			QPushButton* button = new QPushButton(text);
+			QPushButton* button = new QPushButton(text, parent);
 			button->setText(text);
 			button->setProperty("digit", QVariant(number));
 
 			buttons[row][col] = button;
 		}
 	}
-
-	for (int row{ 0 }; row < 3; row++)
-	{
-		for (int col{ 0 }; col < 3; col++)
-		{
-			layout->addWidget(buttons[row][col], row, col);
-		}
-	}
 }
 
 
 Keypad::~Keypad()
-{
-	delete buttons;
-}
+{}
 
 QGridLayout * Keypad::getLayout()
 {

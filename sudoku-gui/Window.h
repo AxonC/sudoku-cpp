@@ -14,8 +14,5 @@ public:
 private:
 	QWidget base;
 	QVBoxLayout verticalLayout;
-	QPushButton* buttons[9][9];
-	QGridLayout* createGameLayout();
-	QPushButton* createGridButton(int row, int col);
 };
 

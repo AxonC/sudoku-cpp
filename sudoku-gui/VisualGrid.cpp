@@ -1,11 +1,16 @@
 #include "VisualGrid.h"
 #include "Keypad.h"
 
-VisualGrid::VisualGrid(QWidget *parent)
+VisualGrid::VisualGrid(QWidget *parent): QWidget(parent)
 {
-	QGridLayout* layout = new QGridLayout(parent);
+	vLayout = new QVBoxLayout(parent);
+	layout = new QGridLayout(parent);
+	padLayout = new QGridLayout(parent);
 
-	Keypad* keypad = new Keypad();
+	vLayout->addLayout(layout);
+	vLayout->addLayout(padLayout);
+
+	Keypad* keypad = new Keypad(parent);
 
 	for (int row{ 0 }; row < 9; row++)
 	{
@@ -24,17 +29,22 @@ VisualGrid::VisualGrid(QWidget *parent)
 		}
 	}
 
-	layout->addWidget(keypad, 10, 0, 9, 9);
+	for (int row{ 0 }; row < 3; row++)
+	{
+		for (int col{ 0 }; col < 3; col++)
+		{
+			padLayout->addWidget(keypad->buttons[row][col], row, col);
+		}
+	}
 }
 
 
 VisualGrid::~VisualGrid()
-{
-}
+{}
 
 QPushButton* VisualGrid::createGridButton(int row, int col)
 {
-	QPushButton* button = new QPushButton("0");
+	QPushButton* button = new QPushButton("0", this);
 
 	button->setProperty("row", QVariant(row));
 	button->setProperty("col", QVariant(col));

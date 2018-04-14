@@ -4,10 +4,11 @@
 #include <QPushButton>
 #include <QGridLayout>
 #include <QVariant>
+#include <memory>
 
 #include "GridWrapper.h"
 
-class VisualGrid : public QWidget, public GridWrapper
+class VisualGrid : public QWidget
 {
 	Q_OBJECT
 public:
@@ -20,6 +21,8 @@ private slots:
 	void setSelected();
 private:
 	QGridLayout * layout;
+	QGridLayout * padLayout;
+	QVBoxLayout * vLayout;
 	QPushButton * buttons[9][9];
 };
 
