@@ -1,7 +1,7 @@
 #include "VisualGrid.h"
 #include "Keypad.h"
 
-VisualGrid::VisualGrid(QWidget *parent): QWidget(parent)
+VisualGrid::VisualGrid(QWidget *parent) : QWidget(parent), GridCore(2)
 {
 	vLayout = new QVBoxLayout(parent);
 	layout = new QGridLayout(parent);
@@ -34,6 +34,7 @@ VisualGrid::VisualGrid(QWidget *parent): QWidget(parent)
 		for (int col{ 0 }; col < 3; col++)
 		{
 			padLayout->addWidget(keypad->buttons[row][col], row, col);
+			connect(keypad->buttons[row][col], SIGNAL(clicked()), this, SLOT(setSquareValue()));
 		}
 	}
 }
@@ -58,10 +59,22 @@ QGridLayout * VisualGrid::getLayout()
 	return layout;
 }
 
+void VisualGrid::setSquareValue()
+{
+	QPushButton* padButton = qobject_cast<QPushButton*>(sender());
+	const QVariant value = padButton->property("digit");
+	setInput(value.toInt());
+
+	buttons[selected.row][selected.col]->setText(value.toString());
+}
+
 void VisualGrid::setSelected()
 {
 	QPushButton* button = qobject_cast<QPushButton*>(sender());
 	QVariant row = button->property("row");
+	QVariant col = button->property("col");
 
-	button->setText(row.toString());
+	setSelectedSquare(row.toInt(), col.toInt());
+
+	button->setText("Selected");
 }

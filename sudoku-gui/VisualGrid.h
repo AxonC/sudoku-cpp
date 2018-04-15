@@ -6,9 +6,9 @@
 #include <QVariant>
 #include <memory>
 
-#include "GridWrapper.h"
+#include "GridCore.h"
 
-class VisualGrid : public QWidget
+class VisualGrid : public QWidget, public GridCore
 {
 	Q_OBJECT
 public:
@@ -17,8 +17,10 @@ public:
 
 	QPushButton* createGridButton(int row, int col);
 	QGridLayout* getLayout();
+	
 private slots:
 	void setSelected();
+	void setSquareValue();
 private:
 	QGridLayout * layout;
 	QGridLayout * padLayout;

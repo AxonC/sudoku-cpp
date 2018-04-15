@@ -23,6 +23,14 @@ Keypad::Keypad(QWidget *parent): QWidget(parent)
 			buttons[row][col] = button;
 		}
 	}
+
+	//for (int row{ 0 }; row < 3; row++)
+	//{
+	//	for (int col{ 0 }; col < 3; col++)
+	//	{
+	//		connect(buttons[row][col], SIGNAL(clicked()), this, SLOT(setSquareValue()));
+	//	}
+	//}
 }
 
 

@@ -14,7 +14,7 @@
     <ClCompile Include="VisualGrid.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GridWrapper.cpp">
+    <ClCompile Include="GridCore.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -60,7 +60,7 @@
     </QtRcc>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GridWrapper.h">
+    <ClInclude Include="GridCore.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
