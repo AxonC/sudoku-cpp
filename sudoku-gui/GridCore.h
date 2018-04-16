@@ -3,36 +3,48 @@
 
 const int SIZE = 9;
 
+#define SUDOKUSIZE 9;
+
 struct Memo {
 	bool value[SIZE] = { 0 };
 };
 
-struct SelectedSquare final {
+struct SelectedSquare {
 	int row;
 	int col;
+};
+
+struct SubGrid {
+	int rows[3];
+	int cols[3];
 };
 
 class GridCore
 {
 public:
-	GridCore(int difficulty);
+	explicit GridCore();
 	~GridCore();
 
 	bool setInput(int value);
-	void displayGrid();
 	bool rowChecker(int row, int value);
 	bool colChecker(int index, int value);
+	bool subGridChecker(SubGrid subGrid, int value);
 	bool setMemo(int row, int col, int value);
 	bool removeMemo(int row, int col, int value);
 	bool loadFromFile(std::string filename);
-	SelectedSquare setSelectedSquare(int col, int row);
+	static bool validateInput(int input);
+	SelectedSquare setSelectedSquare(int row, int col);
+	SelectedSquare getSelectedSquare() const;
+	void defineSubGrids();
+	SubGrid searchForSubGrid(int row, int col) const;
+	SubGrid getGridDefinition(int value);
 protected:
-	bool validateInput(int input);
 	SelectedSquare selected;
 private:
-	int difficulty;
 	int grid[SIZE][SIZE];
 	bool memos[SIZE][SIZE];
+	SubGrid subGrids[9];
+	bool subGridsDefined;
 };
 
 
