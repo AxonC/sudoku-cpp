@@ -3,7 +3,11 @@
 #include <QtWidgets/QMainWindow>
 #include <QPushButton>
 #include <QGridLayout>
-#include <QVariant>
+#include <QApplication>
+#include <QFileDialog>
+#include <string>
+
+#include "VisualGrid.h"
 
 class Window: public QMainWindow
 {
@@ -11,8 +15,12 @@ class Window: public QMainWindow
 public:
 	Window(QWidget *parent = Q_NULLPTR);
 
+	QStringList createFileDialog();
+public slots:
+	void loadSudokuFromFile();
 private:
 	QWidget base;
 	QVBoxLayout verticalLayout;
+	VisualGrid* grid;
 };
 
