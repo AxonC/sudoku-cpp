@@ -37,14 +37,18 @@ public:
 	SelectedSquare getSelectedSquare() const;
 	void defineSubGrids();
 	SubGrid searchForSubGrid(int row, int col) const;
-	SubGrid getGridDefinition(int value);
+	SubGrid getGridDefinition(int index);
+	bool getGridSetupStatus() const;
 protected:
 	SelectedSquare selected;
-private:
 	int grid[SIZE][SIZE];
+private:
 	bool memos[SIZE][SIZE];
+	int solution[SIZE][SIZE];
 	SubGrid subGrids[9];
 	bool subGridsDefined;
+	bool gridSetup;
+	std::string puzzleName;
 };
 
 

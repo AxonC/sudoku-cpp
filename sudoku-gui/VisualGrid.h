@@ -1,12 +1,13 @@
 #pragma once
 
-#include <QWidget>
-#include <QPushButton>
 #include <QGridLayout>
-#include <QVariant>
-#include <memory>
+#include <QPainter>
+#include <QFileDialog>
+#include <QMenuBar>
+#include <QMainWindow>
 
 #include "GridCore.h"
+#include "GridButton.h"
 
 class VisualGrid : public QWidget, public GridCore
 {
@@ -15,10 +16,10 @@ public:
 	VisualGrid(QWidget *parent = Q_NULLPTR);
 	~VisualGrid();
 
-	QPushButton* createGridButton(int row, int col);
-	QGridLayout* getLayout();
-	
 	GridButton* createGridButton(int row, int col);
+	QGridLayout* getLayout() const;
+	void updateInterface();
+	static QFileDialog createFileDialog();
 private slots:
 	void setSelected();
 	void setSquareValue();
@@ -26,7 +27,6 @@ private:
 	QGridLayout * layout;
 	QGridLayout * padLayout;
 	QVBoxLayout * vLayout;
-	QPushButton * buttons[9][9];
 	GridButton * buttons[9][9]{};
 };
 

@@ -4,6 +4,7 @@
 #include <iostream>
 #include <fstream>
 #include <iomanip>
+#include <vector>
 
 GridCore::GridCore()
 {
@@ -112,17 +113,56 @@ bool GridCore::loadFromFile(std::string filename)
 {
 	std::ifstream gridFile(filename);
 
-	if (gridFile) {
-		for (int x{ 0 }; x < SIZE; x++)
+	std::string line;
+	std::vector <std::string> fileLines;
+
+	const std::string nameDef = ";NAME:";
+
+	while (gridFile && std::getline(gridFile, line))
+	{
+		fileLines.push_back(line);
+	}
+
+	std::string nameLine = fileLines[0];
+
+	// puzzle name parse
+	for (int a{0}; a < nameLine.length(); a++)
+	{
+		if (nameLine[a] != ';')
 		{
-			for (int y{ 0 }; y < SIZE; y++)
+			puzzleName.append(&nameLine[a]);
+			break;
+		}
+	}
+
+	// puzzle init parse
+	for (int vectorElement{2}; vectorElement < 11; vectorElement++)
+	{
+		for (int puzzle{ 0 }; puzzle < 9; puzzle++)
+		{
+			std::string newLine = fileLines[vectorElement];
+
+			if(newLine[puzzle] != ' ')
 			{
-				gridFile >> grid[x][y];
+				grid[vectorElement - 2][puzzle] = newLine[puzzle] - '0';
 			}
 		}
-		return true;
 	}
-	return false;
+	
+	// solution parse
+	for (int solutionVecElement{12}; solutionVecElement < 20; solutionVecElement++)
+	{
+		for (int solutionIndex{0}; solutionIndex < 9; solutionIndex++)
+		{
+			std::string solutionline = fileLines[solutionVecElement];
+			if (solutionline[solutionIndex] != ' ')
+			{
+				solution[solutionVecElement - 12][solutionIndex] = solutionline[solutionIndex] - '0';
+			}
+		}
+	}
+
+	return true;
 }
 
 SelectedSquare GridCore::setSelectedSquare(int row, int col)
@@ -155,8 +195,6 @@ void GridCore::defineSubGrids()
 
 SubGrid GridCore::searchForSubGrid(int row, int col) const
 {
-	int gridIndex;
-
 	if(subGridsDefined)
 	{
 		for (int grid{ 0 }; grid < SIZE; grid++)
@@ -182,6 +220,11 @@ SubGrid GridCore::getGridDefinition(int index)
 	{
 		return subGrids[index];
 	}
+}
+
+bool GridCore::getGridSetupStatus() const
+{
+	return gridSetup;
 }
 
 bool GridCore::validateInput(int input)
