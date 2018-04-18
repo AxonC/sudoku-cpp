@@ -18,6 +18,7 @@ public:
 	QPushButton* createGridButton(int row, int col);
 	QGridLayout* getLayout();
 	
+	GridButton* createGridButton(int row, int col);
 private slots:
 	void setSelected();
 	void setSquareValue();
@@ -26,5 +27,6 @@ private:
 	QGridLayout * padLayout;
 	QVBoxLayout * vLayout;
 	QPushButton * buttons[9][9];
+	GridButton * buttons[9][9]{};
 };
 

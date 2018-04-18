@@ -1,7 +1,10 @@
 #include "VisualGrid.h"
 #include "Keypad.h"
 
-VisualGrid::VisualGrid(QWidget *parent) : QWidget(parent), GridCore(2)
+#define VARIANT(x) (QVariant(x))
+
+
+VisualGrid::VisualGrid(QWidget *parent) : QWidget(parent)
 {
 	vLayout = new QVBoxLayout(parent);
 	layout = new QGridLayout(parent);
@@ -18,13 +21,6 @@ VisualGrid::VisualGrid(QWidget *parent) : QWidget(parent), GridCore(2)
 		{
 			buttons[row][col] = createGridButton(row, col);
 			connect(buttons[row][col], SIGNAL(clicked()), this, SLOT(setSelected()));
-		}
-	}
-
-	for (int row{ 0 }; row < 9; row++)
-	{
-		for (int col{ 0 }; col < 9; col++)
-		{
 			layout->addWidget(buttons[row][col], row, col);
 		}
 	}
@@ -39,42 +35,59 @@ VisualGrid::VisualGrid(QWidget *parent) : QWidget(parent), GridCore(2)
 	}
 }
 
-
 VisualGrid::~VisualGrid()
-{}
+= default;
 
-QPushButton* VisualGrid::createGridButton(int row, int col)
+GridButton* VisualGrid::createGridButton(const int row, const int col)
 {
-	QPushButton* button = new QPushButton("0", this);
+	GridButton* button = new GridButton("0", this);
 
-	button->setProperty("row", QVariant(row));
-	button->setProperty("col", QVariant(col));
+	button->setColProperty(col);
+	button->setRowProperty(row);
 	button->setFixedSize(40, 40);
 
 	return button;
 }
 
-QGridLayout * VisualGrid::getLayout()
+QGridLayout * VisualGrid::getLayout() const
 {
 	return layout;
+}
+
+void VisualGrid::updateInterface()
+{
+	for(int row{0}; row < SIZE; row++)
+	{
+		for (int col{0}; col < SIZE; col++)
+		{
+			int selected = grid[row][col];
+			GridButton* button = buttons[row][col];
+			if (selected != 0) {
+				button->setDisplayedValueProperty(std::to_string(selected));
+				button->setActiveProperty(false);
+			} else {
+				button->setDisplayedValueProperty(std::to_string(selected));
+			}
+		}
+	}
 }
 
 void VisualGrid::setSquareValue()
 {
 	QPushButton* padButton = qobject_cast<QPushButton*>(sender());
 	const QVariant value = padButton->property("digit");
-	setInput(value.toInt());
 
-	buttons[selected.row][selected.col]->setText(value.toString());
+	if (setInput(value.toInt()))
+	{
+		buttons[selected.row][selected.col]->setText(value.toString());
+	}
 }
 
 void VisualGrid::setSelected()
 {
-	QPushButton* button = qobject_cast<QPushButton*>(sender());
-	QVariant row = button->property("row");
-	QVariant col = button->property("col");
+	GridButton* button = qobject_cast<GridButton*>(sender());
 
-	setSelectedSquare(row.toInt(), col.toInt());
-
-	button->setText("Selected");
+	setSelectedSquare(button->getRowProperty(), button->getColProperty());
+	button->toggleActive();
+	button->toggleActiveBackground();
 }
