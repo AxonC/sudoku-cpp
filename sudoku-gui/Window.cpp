@@ -1,14 +1,23 @@
 #include "Window.h"
 #include "Keypad.h"
-#include "VisualGrid.h"
 
 
 Window::Window(QWidget *parent) : QMainWindow(parent)
 {
-	VisualGrid grid = new VisualGrid(&base);
+	grid = new VisualGrid(&base);
+
+	QAction *quit = new QAction("&Quit", this);
+	QAction *openFile = new QAction("&Load from File", this);
+
+	menuBar()->addAction(quit);
+	menuBar()->addAction(openFile);
+
+	QFileDialog* fileDialog = new QFileDialog(this);
+
+	connect(quit, &QAction::triggered, qApp, QApplication::quit);
+	connect(openFile, &QAction::triggered, qApp, [this]() {loadSudokuFromFile(); });
 
 	setCentralWidget(&base);
-}}
 }
 
 QStringList Window::createFileDialog()
