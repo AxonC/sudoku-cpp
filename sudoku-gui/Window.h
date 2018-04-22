@@ -4,7 +4,10 @@
 #include <QPushButton>
 #include <QGridLayout>
 #include <QApplication>
+#include <QAction>
+#include <QMenuBar>
 #include <QFileDialog>
+#include <QMessageBox>
 #include <string>
 
 #include "VisualGrid.h"
@@ -18,6 +21,7 @@ public:
 	QStringList createFileDialog();
 public slots:
 	void loadSudokuFromFile();
+	bool checkForCorrectAnswers();
 private:
 	QWidget base;
 	QVBoxLayout verticalLayout;

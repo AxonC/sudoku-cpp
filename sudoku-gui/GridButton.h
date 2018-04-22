@@ -11,8 +11,11 @@ public:
 	explicit GridButton(const QString &text);
 	~GridButton();
 
-	bool toggleActive();
-	void toggleActiveBackground();
+	bool toggleSelected();
+	void toggleSelectedBackground();
+	void setSelectedBackground(bool status);
+
+	void setSelected(bool status);
 
 	void setRowProperty(int givenRow);
 	int getRowProperty() const;
@@ -22,9 +25,8 @@ public:
 
 	void setDisplayedValueProperty(std::string value);
 
-	void setActiveProperty(bool property);
-
-	void setStaticSquare();
+	void setStaticSquare(bool status);
+	bool getStaticProperty() const;
 
 	static bool propertyValidator(int property);	
 private:
@@ -33,7 +35,7 @@ private:
 	const QString QT_BOLD = QString("font-weight: 700;");
 	int row;
 	int col;
-	bool active;
+	bool selected;
 	bool staticSquare;
 	std::string displayedValue;
 };

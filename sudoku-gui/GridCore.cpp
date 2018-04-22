@@ -1,9 +1,7 @@
 #pragma once
 
 #include "GridCore.h"
-#include <iostream>
 #include <fstream>
-#include <iomanip>
 #include <vector>
 
 GridCore::GridCore()
@@ -40,6 +38,7 @@ GridCore::~GridCore()
 
 bool GridCore::setInput(const int value)
 {
+	clearDisallowedNumber();
 	if (validateInput(value))
 	{
 		if (!rowChecker(selected.row, value) 
@@ -61,6 +60,7 @@ bool GridCore::rowChecker(int row, int value)
 	for (int i = 0; i < SIZE; i++)
 		if (grid[row][i] == value)
 			foundFlag = true;
+			addDisallowedNumber(value);
 
 	return foundFlag;
 }
@@ -72,6 +72,7 @@ bool GridCore::colChecker(int index, int value)
 	for (int i = 0; i < SIZE; i++)
 		if (grid[i][index] == value)
 			foundFlag = true;
+			addDisallowedNumber(value);
 
 	return foundFlag;
 }
@@ -135,6 +136,7 @@ bool GridCore::loadFromFile(std::string filename)
 		}
 	}
 
+	int puzzleElements{ 0 };
 	// puzzle init parse
 	for (int vectorElement{2}; vectorElement < 11; vectorElement++)
 	{
@@ -145,10 +147,12 @@ bool GridCore::loadFromFile(std::string filename)
 			if(newLine[puzzle] != ' ')
 			{
 				grid[vectorElement - 2][puzzle] = newLine[puzzle] - '0';
+				puzzleElements++;
 			}
 		}
 	}
 	
+	int solutionElements{ 0 };
 	// solution parse
 	for (int solutionVecElement{12}; solutionVecElement < 20; solutionVecElement++)
 	{
@@ -158,11 +162,12 @@ bool GridCore::loadFromFile(std::string filename)
 			if (solutionline[solutionIndex] != ' ')
 			{
 				solution[solutionVecElement - 12][solutionIndex] = solutionline[solutionIndex] - '0';
+				solutionElements++;
 			}
 		}
 	}
-
-	return true;
+	
+	return solutionElements == 81 && puzzleElements == 81;
 }
 
 SelectedSquare GridCore::setSelectedSquare(int row, int col)
@@ -225,6 +230,39 @@ SubGrid GridCore::getGridDefinition(int index)
 bool GridCore::getGridSetupStatus() const
 {
 	return gridSetup;
+}
+
+bool GridCore::addDisallowedNumber(int number)
+{
+	if (std::find(disallowedNumbers.begin(), disallowedNumbers.end(), number) == disallowedNumbers.end()) {
+		disallowedNumbers.push_back(number);
+		return true;
+	}
+	return false;
+}
+
+bool GridCore::clearDisallowedNumber() const
+{
+	return disallowedNumbers.empty();
+}
+
+std::vector<int> GridCore::getDisallowedNumbers() const
+{
+	return disallowedNumbers;
+}
+
+bool GridCore::checkSolution()
+{
+	bool correct{ false };
+	for (int row{0}; row < SIZE; row++)
+	{
+		for (int col{0}; col < SIZE; col++)
+		{
+			correct = grid[row][col] == solution[row][col];
+		}
+	}
+
+	return correct;
 }
 
 bool GridCore::validateInput(int input)

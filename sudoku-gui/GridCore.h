@@ -1,12 +1,13 @@
 #pragma once
 #include <string>
+#include <vector>
 
 const int SIZE = 9;
 
 #define SUDOKUSIZE 9;
 
 struct Memo {
-	bool value[SIZE] = { 0 };
+	bool value[SIZE] = { false };
 };
 
 struct SelectedSquare {
@@ -39,9 +40,14 @@ public:
 	SubGrid searchForSubGrid(int row, int col) const;
 	SubGrid getGridDefinition(int index);
 	bool getGridSetupStatus() const;
+	bool addDisallowedNumber(int number);
+	bool clearDisallowedNumber() const;
+	std::vector<int> getDisallowedNumbers() const;
+	bool checkSolution();
 protected:
 	SelectedSquare selected;
 	int grid[SIZE][SIZE];
+	std::vector<int> disallowedNumbers;
 private:
 	bool memos[SIZE][SIZE];
 	int solution[SIZE][SIZE];

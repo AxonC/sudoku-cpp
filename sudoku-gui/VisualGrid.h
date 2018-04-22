@@ -3,8 +3,8 @@
 #include <QGridLayout>
 #include <QPainter>
 #include <QFileDialog>
-#include <QMenuBar>
 #include <QMainWindow>
+#include <QFrame>
 
 #include "GridCore.h"
 #include "GridButton.h"
@@ -20,6 +20,7 @@ public:
 	QGridLayout* getLayout() const;
 	void updateInterface();
 	static QFileDialog createFileDialog();
+	void clearSelectedButton();
 private slots:
 	void setSelected();
 	void setSquareValue();

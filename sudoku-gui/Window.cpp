@@ -6,16 +6,17 @@ Window::Window(QWidget *parent) : QMainWindow(parent)
 {
 	grid = new VisualGrid(&base);
 
-	QAction *quit = new QAction("&Quit", this);
-	QAction *openFile = new QAction("&Load from File", this);
+	QAction* quit = new QAction("&Quit", this);
+	QAction* openFile = new QAction("&Load from File...", this);
+	QAction* checkSolution = new QAction("&Check Solution", this);
 
-	menuBar()->addAction(quit);
 	menuBar()->addAction(openFile);
-
-	QFileDialog* fileDialog = new QFileDialog(this);
+	menuBar()->addAction(checkSolution);
+	menuBar()->addAction(quit);
 
 	connect(quit, &QAction::triggered, qApp, QApplication::quit);
 	connect(openFile, &QAction::triggered, qApp, [this]() {loadSudokuFromFile(); });
+	connect(checkSolution, &QAction::triggered, qApp, [this]() {checkForCorrectAnswers(); });
 
 	setCentralWidget(&base);
 }
@@ -45,4 +46,15 @@ void Window::loadSudokuFromFile()
 		grid->updateInterface();
 	}
 	/** END OF CITED CODE FROM: http://doc.qt.io/qt-5/qtwidgets-tutorials-addressbook-part6-addressbook-cpp.html **/
+}
+
+bool Window::checkForCorrectAnswers()
+{
+	if (grid->checkSolution())
+	{
+		QMessageBox::information(this, tr("Sudoku"), tr("You have completed the puzzle! Well done!"), QMessageBox::Escape);
+		return true;
+	}
+	QMessageBox::warning(this, tr("Sudoku"), tr("You are missing a few entries."), QMessageBox::Escape);
+	return false;
 }

@@ -44,7 +44,16 @@ GridButton* VisualGrid::createGridButton(const int row, const int col)
 
 	button->setColProperty(col);
 	button->setRowProperty(row);
-	button->setFixedSize(40, 40);
+	button->setFixedSize(50, 50);
+
+	if(row % 3 == 2)
+	{
+		QFrame* line = new QFrame();
+		line->setGeometry(QRect(320, 150, 118, 3));
+		line->setFrameShape(QFrame::HLine);
+		line->setFrameShadow(QFrame::Sunken);
+		layout->addWidget(line);
+	}
 
 	return button;
 }
@@ -64,7 +73,7 @@ void VisualGrid::updateInterface()
 			GridButton* button = buttons[row][col];
 			if (selected != 0) {
 				button->setDisplayedValueProperty(std::to_string(selected));
-				button->setActiveProperty(false);
+				button->setStaticSquare(false);
 			} else {
 				button->setDisplayedValueProperty(std::to_string(selected));
 			}
@@ -83,11 +92,28 @@ void VisualGrid::setSquareValue()
 	}
 }
 
+void VisualGrid::clearSelectedButton()
+{
+	for (int row{0}; row < SIZE; row++)
+	{
+		for (int col{0}; col < 9; col++)
+		{
+			if (!buttons[row][col]->getStaticProperty())
+			{
+				buttons[row][col]->setSelected(false);
+				buttons[row][col]->setSelectedBackground(false);
+			}
+			
+		}
+	}
+}
+
 void VisualGrid::setSelected()
 {
+	clearSelectedButton();
+
 	GridButton* button = qobject_cast<GridButton*>(sender());
 
 	setSelectedSquare(button->getRowProperty(), button->getColProperty());
-	button->toggleActive();
-	button->toggleActiveBackground();
+	button->toggleSelected();
 }

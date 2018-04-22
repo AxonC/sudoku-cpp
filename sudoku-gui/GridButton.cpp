@@ -2,38 +2,58 @@
 
 GridButton::GridButton(const QString &text, QWidget * parent) : QPushButton(text, parent)
 {
-	active = true;
+	selected = true;
+
+	staticSquare = false;
 
 	displayedValue = text.toStdString();
 }
 
 GridButton::GridButton(const QString &text): QPushButton(text, Q_NULLPTR)
 {
-	active = true;
+	selected = false;
+	
+	staticSquare = false;
 
 	displayedValue = text.toStdString();
 }
 
-GridButton::~GridButton(){};
+GridButton::~GridButton() = default;;
 
-bool GridButton::toggleActive()
+bool GridButton::toggleSelected()
 {
-	active = !active;
+	selected = !selected;
 
-	return active;
+	this->toggleSelectedBackground();
+
+	return selected;
 }
 
-void GridButton::toggleActiveBackground()
+void GridButton::toggleSelectedBackground()
 {
-	if(!active) {
-		this->setStyleSheet(styleSheet());
+	if(!selected) {
+		this->setStyleSheet("");
 	} else {
 		const QString style = QString("background-color: %1; color: %2; border: none;").arg(QT_BLACK.name()).arg(QT_WHITE.name());
 		this->setStyleSheet(style);
 	}
 }
 
-void GridButton::setRowProperty(int givenRow)
+void GridButton::setSelectedBackground(bool status)
+{
+	if(!staticSquare)
+	{
+		if (!status) {
+			this->setStyleSheet("");
+		} else {
+			const QString style = QString("background-color: %1; color: %2; border: none;").arg(QT_BLACK.name()).arg(QT_WHITE.name());
+			this->setStyleSheet(style);
+		}
+	}
+	
+}
+
+void GridButton::setRowProperty(const int givenRow)
 {
 	if (propertyValidator(givenRow))
 	{
@@ -59,25 +79,35 @@ int GridButton::getColProperty() const
 	return col;
 }
 
-void GridButton::setDisplayedValueProperty(std::string value)
+void GridButton::setDisplayedValueProperty(const std::string value)
 {
 	displayedValue = value;
 
 	this->setText(QString::fromStdString(displayedValue));
 }
 
-void GridButton::setActiveProperty(bool property)
+void GridButton::setStaticSquare(const bool status)
 {
-	active = property;
+	staticSquare = status;
 
-	if (!active)
+	if(!staticSquare)
 	{
-		this->setDisabled(true);
+		this->setEnabled(staticSquare);
 		this->setStyleSheet(QT_BOLD);
 	}
 }
 
-bool GridButton::propertyValidator(int property)
+bool GridButton::getStaticProperty() const
+{
+	return staticSquare;
+}
+
+void GridButton::setSelected(const bool status)
+{
+	selected = status;
+}
+
+bool GridButton::propertyValidator(const int property)
 {
 	return property < 9 && property >= 0;
 }

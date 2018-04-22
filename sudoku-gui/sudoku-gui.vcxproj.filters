@@ -2,9 +2,6 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="sudokugui.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Keypad.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -15,6 +12,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GridCore.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GridButton.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -41,9 +41,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="sudokugui.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
     <QtMoc Include="Keypad.h">
       <Filter>Header Files</Filter>
     </QtMoc>
@@ -51,6 +48,9 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="VisualGrid.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="GridButton.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

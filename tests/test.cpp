@@ -17,11 +17,6 @@ struct GridTest : testing::Test
 	}
 };
 
-struct test: testing::Test
-{
-	
-};
-
 TEST_F(GridTest, InputMustBeInRange)
 {
 	EXPECT_EQ(true, grid->validateInput(1));
